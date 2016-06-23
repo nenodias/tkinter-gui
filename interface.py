@@ -80,7 +80,19 @@ class Aplicacao(Frame):
                 pos += 1
 
     def compactar(self):
-        pass
+        lista_arquivos = self.listbox.get(0, END)
+        if not lista_arquivos:
+            messagebox.showinfo('Compactador', 'Adicione algum arquivo para compactar')
+            return
+        def executar(lista=None):
+            self.botao_compactar.configure(state=DISABLED)
+            compactador = Compactador()
+            compactador.compactar(lista)
+            self.botao_compactar.configure(state=NORMAL)
+            messagebox.showinfo('Compactador', 'Arquivos compactados com sucesso')
+
+        t = Thread(target=executar, kwargs={'lista':lista_arquivos})
+        t.start()
 
 root = Tk()
 root.title('Compactador de arquivos')

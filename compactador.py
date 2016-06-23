@@ -2,7 +2,7 @@ import zipfile
 import os
 
 class Compactador(object):
-    def compactar(self, lista_arquivo):
+    def compactar(self, lista_arquivos):
         with zipfile.ZipFile("arquivo.zip", "w") as arquivo_zip:
             for arquivo in lista_arquivos:
             # testa se é arquivo e se o arquivo existe
