@@ -61,6 +61,9 @@ class Aplicacao(Frame):
         self.botao_compactar['font'] = ('Arial', 12)
         self.botao_compactar.pack()
 
+        self.progress_bar = ttk.Progressbar(self.frame3, length=300, mode='determinate')
+        self.progress_bar.pack(side=BOTTOM)
+
 
     def adicionar(self):
         arquivos = list( askopenfilenames(title='Escolher arquivos') )
@@ -86,9 +89,14 @@ class Aplicacao(Frame):
             return
         def executar(lista=None):
             self.botao_compactar.configure(state=DISABLED)
+            self.progress_bar.start()
+            
             compactador = Compactador()
             compactador.compactar(lista)
+            
             self.botao_compactar.configure(state=NORMAL)
+            self.progress_bar.stop()
+            
             messagebox.showinfo('Compactador', 'Arquivos compactados com sucesso')
 
         t = Thread(target=executar, kwargs={'lista':lista_arquivos})
