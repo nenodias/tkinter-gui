@@ -1,7 +1,7 @@
 import tkinter
 from tkinter import *
 from tkinter import ttk, messagebox
-from tkinter.filedialog import askopenfilename, askopenfilenames
+from tkinter.filedialog import askopenfilename, askopenfilenames, asksaveasfilename
 
 from compactador import *
 from threading import Thread
@@ -88,16 +88,18 @@ class Aplicacao(Frame):
             messagebox.showinfo('Compactador', 'Adicione algum arquivo para compactar')
             return
         def executar(lista=None):
-            self.botao_compactar.configure(state=DISABLED)
-            self.progress_bar.start()
-            
-            compactador = Compactador()
-            compactador.compactar(lista)
-            
-            self.botao_compactar.configure(state=NORMAL)
-            self.progress_bar.stop()
-            
-            messagebox.showinfo('Compactador', 'Arquivos compactados com sucesso')
+            arquivo_destino = asksaveasfilename(title='Salvar zip', filetypes=[('Zip file','*.zip')])
+            if arquivo_destino:
+                self.botao_compactar.configure(state=DISABLED)
+                self.progress_bar.start()
+
+                compactador = Compactador(arquivo_destino)
+                compactador.compactar(lista)
+                
+                self.botao_compactar.configure(state=NORMAL)
+                self.progress_bar.stop()
+                
+                messagebox.showinfo('Compactador', 'Arquivos compactados com sucesso')
 
         t = Thread(target=executar, kwargs={'lista':lista_arquivos})
         t.start()
